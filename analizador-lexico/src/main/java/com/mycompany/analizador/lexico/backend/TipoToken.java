@@ -9,5 +9,8 @@ package com.mycompany.analizador.lexico.backend;
  * @author mynordma
  */
 public enum TipoToken {
-    
+    IDENTIFICADOR, SUMA, RESTA, EXPONENTE, DIVISION, MODULO, 
+    MULTIPLICACION, IGUAL, DIFERENTE, MAYORQUE, MENORQUE, 
+    MAYOROIGUALQUE, MENOROIGUALQUE, Y, O, 
+    NEGACION, ASIGNACIONSIMPLE, ASIGNACIONCOMPUESTA, 
 }

@@ -30,7 +30,7 @@ public class ArchivoEntrada {
         for (int i = 0; i < texto.length(); i++) {
             char c = texto.charAt(i);
 
-            if (c != ' ') {
+            if (c != ' ' && c != '\n') {
                 palabraActual.append(c);
             } else if (palabraActual.length() > 0) {
                 palabras.add(palabraActual.toString());

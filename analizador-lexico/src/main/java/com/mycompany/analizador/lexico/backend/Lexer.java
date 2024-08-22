@@ -82,7 +82,8 @@ public class Lexer {
     }
     
     private boolean esIdentificador(String palabra) {
-        return true;
+        Gramatica gramatica = new Gramatica(palabra);
+        return gramatica.identificador();
     }
 
     private boolean esSuma(String palabra) {

@@ -109,9 +109,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         
         Lexer lexer = new Lexer();
         for (String palabra : palabras) {
+            System.out.println("Palabra: " + palabra);
             tokens.add(lexer.generarToken(palabra));
-            System.out.println(tokens.size());
-            System.out.println(tokens.get(tokens.size()-1).getTipo().name());
+            System.out.println("Token " + tokens.size() + ": " + tokens.get(tokens.size()-1).getTipo().name());
         }
         
     }//GEN-LAST:event_generarBtnActionPerformed

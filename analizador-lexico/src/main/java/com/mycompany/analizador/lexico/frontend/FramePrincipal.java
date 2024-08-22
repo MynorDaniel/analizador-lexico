@@ -5,6 +5,10 @@
 package com.mycompany.analizador.lexico.frontend;
 
 import com.mycompany.analizador.lexico.backend.ArchivoEntrada;
+import com.mycompany.analizador.lexico.backend.Lexer;
+import com.mycompany.analizador.lexico.backend.Token;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFileChooser;
 
 /**
@@ -100,11 +104,16 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void generarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarBtnActionPerformed
         ArchivoEntrada archivo = new ArchivoEntrada();
-        String[] tokens = archivo.separarTokens(textArea.getText());
+        String[] palabras = archivo.separarTokens(textArea.getText());
+        List<Token> tokens = new ArrayList<>();
         
-        for (String token : tokens) {
-            System.out.println("Token:" + token);
+        Lexer lexer = new Lexer();
+        for (String palabra : palabras) {
+            tokens.add(lexer.generarToken(palabra));
+            System.out.println(tokens.size());
+            System.out.println(tokens.get(tokens.size()-1).getTipo().name());
         }
+        
     }//GEN-LAST:event_generarBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

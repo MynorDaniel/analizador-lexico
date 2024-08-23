@@ -7,15 +7,24 @@ package com.mycompany.analizador.lexico.frontend;
 import com.mycompany.analizador.lexico.backend.ArchivoEntrada;
 import com.mycompany.analizador.lexico.backend.Lexer;
 import com.mycompany.analizador.lexico.backend.Token;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 
 /**
  *
  * @author mynordma
  */
 public class FramePrincipal extends javax.swing.JFrame {
+    private int filas;
+    private int columnas;
+    private List<String> colores;
 
     /**
      * Creates new form FramePrincipal
@@ -25,6 +34,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.setTitle("Analizador Lexico");
         this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
+        this.generarBtn.setEnabled(false);
     }
 
     /**
@@ -39,8 +49,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
         generarBtn = new javax.swing.JButton();
+        cuadriculaPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         importarBtn = new javax.swing.JMenu();
+        dimensionesBtn = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,6 +67,19 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
+        cuadriculaPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout cuadriculaPanelLayout = new javax.swing.GroupLayout(cuadriculaPanel);
+        cuadriculaPanel.setLayout(cuadriculaPanelLayout);
+        cuadriculaPanelLayout.setHorizontalGroup(
+            cuadriculaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+        );
+        cuadriculaPanelLayout.setVerticalGroup(
+            cuadriculaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 495, Short.MAX_VALUE)
+        );
+
         importarBtn.setText("Importar");
         importarBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -63,6 +88,14 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(importarBtn);
 
+        dimensionesBtn.setText("Establecer dimensiones cuadricula");
+        dimensionesBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dimensionesBtnMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(dimensionesBtn);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -70,23 +103,28 @@ public class FramePrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(181, 181, 181)
-                        .addComponent(generarBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(514, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(generarBtn)
+                        .addGap(184, 184, 184)))
+                .addComponent(cuadriculaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(generarBtn)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(generarBtn))
+                    .addComponent(cuadriculaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();
@@ -104,7 +142,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void generarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarBtnActionPerformed
         ArchivoEntrada archivo = new ArchivoEntrada();
-        String[] palabras = archivo.separarTokens(textArea.getText().trim());
+        String[] palabras = archivo.separarPalabrasCompuestas(archivo.separarTokens(textArea.getText().trim()));
         List<Token> tokens = new ArrayList<>();
         
         Lexer lexer = new Lexer();
@@ -117,14 +155,117 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
             
             if(!tokens.isEmpty()){
-               System.out.println("Token " + tokens.size() + ": " + tokens.get(tokens.size()-1).getTipo().name()); 
+                System.out.println("Token " + tokens.size() + ": " + tokens.get(tokens.size()-1).getTipo().name()); 
+                
             }
             
         }
         
+        colores = new ArrayList<>();
+        
+        for (int i = 0; i < tokens.size(); i++) {
+            colores.add(tokens.get(i).getTipo().getColor());
+        }
+        
+        pintarCuadricula();
+        
     }//GEN-LAST:event_generarBtnActionPerformed
 
+    private void dimensionesBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dimensionesBtnMouseClicked
+        // Crear el JDialog
+        JDialog dialogo = new JDialog(this, "Establecer dimensiones", true);
+        dialogo.setSize(300, 150);
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setLayout(new java.awt.GridLayout(3, 2));
+
+        // Etiquetas y campos de texto para filas y columnas
+        javax.swing.JLabel filasLabel = new javax.swing.JLabel("Filas:");
+        javax.swing.JTextField filasField = new javax.swing.JTextField();
+        javax.swing.JLabel columnasLabel = new javax.swing.JLabel("Columnas:");
+        javax.swing.JTextField columnasField = new javax.swing.JTextField();
+
+        // Botón de confirmación
+        javax.swing.JButton confirmarBtn = new javax.swing.JButton("Confirmar");
+        confirmarBtn.addActionListener((java.awt.event.ActionEvent evt1) -> {
+            try {
+                int filasIngresadas = Integer.parseInt(filasField.getText().trim());
+                int columnasIngresadas = Integer.parseInt(columnasField.getText().trim());
+                
+                if (filasIngresadas > 0 && columnasIngresadas > 0) {
+                    filas = filasIngresadas;
+                    columnas = columnasIngresadas;
+                    dialogo.dispose(); 
+                    crearCuadricula();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(dialogo, "Los valores deben ser mayores a cero.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                javax.swing.JOptionPane.showMessageDialog(dialogo, "Por favor ingrese numeros enteros validos.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        dialogo.add(filasLabel);
+        dialogo.add(filasField);
+        dialogo.add(columnasLabel);
+        dialogo.add(columnasField);
+        dialogo.add(confirmarBtn);
+
+        dialogo.setVisible(true);
+        
+    }//GEN-LAST:event_dimensionesBtnMouseClicked
+
+    private void crearCuadricula() {
+        cuadriculaPanel.removeAll(); 
+        cuadriculaPanel.setLayout(new GridLayout(filas, columnas, 1, 1)); 
+
+        int cellWidth = 500 / columnas;
+        int cellHeight = 500 / filas;
+
+        for (int i = 0; i < filas * columnas; i++) {
+            JPanel cell = new JPanel();
+            cell.setPreferredSize(new Dimension(cellWidth, cellHeight));
+            cell.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            cuadriculaPanel.add(cell);
+        }
+
+        cuadriculaPanel.revalidate(); 
+        cuadriculaPanel.repaint();
+        
+        this.generarBtn.setEnabled(true);
+    }
+
+    private void pintarCuadricula() throws java.lang.IndexOutOfBoundsException{
+        if (filas * columnas < colores.size()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Cantidad de tokens y cuadros diferentes", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+
+        cuadriculaPanel.removeAll(); 
+        
+        int cellWidth = 500 / columnas;
+        int cellHeight = 500 / filas;
+
+        for (int i = 0; i < filas * columnas; i++) {
+            JPanel celda = new JPanel();
+            celda.setPreferredSize(new Dimension(cellWidth, cellHeight));
+            try {
+               celda.setBackground(Color.decode(colores.get(i))); 
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Cuadricula en blanco");
+            }
+            
+            celda.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            cuadriculaPanel.add(celda);
+        }
+
+        cuadriculaPanel.revalidate(); 
+        cuadriculaPanel.repaint();
+    }
+
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel cuadriculaPanel;
+    private javax.swing.JMenu dimensionesBtn;
     private javax.swing.JButton generarBtn;
     private javax.swing.JMenu importarBtn;
     private javax.swing.JMenuBar jMenuBar1;

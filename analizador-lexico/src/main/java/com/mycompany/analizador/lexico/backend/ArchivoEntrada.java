@@ -30,27 +30,18 @@ public class ArchivoEntrada {
                 
         for (int i = 0; i < texto.length(); i++) {
             char c = texto.charAt(i);
-            int sq = 0;
-            
-            if (palabraActual.toString().startsWith("Square.Color(") && sq!=1) {
                 
-                while(c != ')'){
-                    palabraActual.append(c);
-                    i++;
-                    c = texto.charAt(i);
-                }
-                
-                palabraActual.append(c);
-                    
-                    c = texto.charAt(i);
-                    sq++;
-            }
-            
             if (c != ' ' && c != '\n') {
                 palabraActual.append(c);
             } else if (palabraActual.length() > 0) {
-                palabras.add(palabraActual.toString());
-                palabraActual.setLength(0);
+                if(!palabraActual.toString().startsWith("Square.Color(")){
+                    palabras.add(palabraActual.toString());
+                    palabraActual.setLength(0); 
+                }else if(palabraActual.toString().startsWith("Square.Color(") && palabraActual.toString().endsWith(")")){
+                    palabras.add(palabraActual.toString());
+                    palabraActual.setLength(0); 
+                }
+                
             }
         }
 
@@ -60,4 +51,30 @@ public class ArchivoEntrada {
 
         return palabras.toArray(String[]::new);
     }
+    
+    public String[] separarPalabrasCompuestas(String[] palabras) {
+        ArrayList<String> resultado = new ArrayList<>();
+
+        for (String palabra : palabras) {
+            if (palabra.endsWith("()")) {
+                // Caso: identificador + parentesis
+                String identificador = palabra.substring(0, palabra.length() - 2);
+                if (!identificador.isEmpty()) {
+                    resultado.add(identificador);
+                }
+                resultado.add("("); 
+                resultado.add(")"); 
+            } else if (palabra.equals("()")) {
+                // Caso: solo parentesis ()
+                resultado.add("("); 
+                resultado.add(")");
+            } else {
+                // Palabra que no sigue la estructura compuesta
+                resultado.add(palabra);
+            }
+        }
+
+        return resultado.toArray(String[]::new);
+    }
+
 }

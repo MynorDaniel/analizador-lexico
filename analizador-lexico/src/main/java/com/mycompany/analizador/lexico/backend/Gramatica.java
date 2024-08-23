@@ -24,9 +24,7 @@ public class Gramatica {
         try {
             if(esSquare()){
             String[] parametros = eliminarEspaciosEnBlanco(palabra.substring(21, palabra.length()-1)).split(",");
-                for (String parametro : parametros) {
-                    System.out.println("Param: " + parametro);
-                }
+                
             if(palabra.charAt(20) != ','){
                 return false;
             }else if(!parametrosValidos(parametros)){

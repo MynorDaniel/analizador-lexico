@@ -1,9 +1,61 @@
-Module Saludo
-    Dim abc As Integer
-    Sub saludar ( )
-        'Comentario
-
-    End Sub
-user_34
+userName
++
+-
+^
+/
+Mod
+*
+==
+<>
+>
+<
+>=
+<=
+And
+Or
+Not
+=
++=
+-=
+*=
+/=
+Module
+End
+Sub
+Main
+Dim
+As
+Integer
+String
+Boolean
+Double
+Char
+Console.WriteLine
+Console.ReadLine
+If
+ElseIf
+Else
+Then
+While
+Do
+Loop
+For
+To
+Next
+Function
+Return
+Const
+333
+23.4
+"hola"
+'b'
+True
 Square.Color(#ffffff, 1 , 1 )
 Square.Color(#fffff3)
+'comment
+(
+{
+[
+,
+.
+saludo()

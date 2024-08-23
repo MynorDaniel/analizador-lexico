@@ -1,7 +1,9 @@
-Modulo Saludo
+Module Saludo
     Dim abc As Integer
-    Sub saludar()
+    Sub saludar ( )
         'Comentario
 
     End Sub
 user_34
+Square.Color(#ffffff, 1 , 1 )
+Square.Color(#fffff3)

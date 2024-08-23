@@ -104,14 +104,22 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void generarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarBtnActionPerformed
         ArchivoEntrada archivo = new ArchivoEntrada();
-        String[] palabras = archivo.separarTokens(textArea.getText());
+        String[] palabras = archivo.separarTokens(textArea.getText().trim());
         List<Token> tokens = new ArrayList<>();
         
         Lexer lexer = new Lexer();
         for (String palabra : palabras) {
             System.out.println("Palabra: " + palabra);
-            tokens.add(lexer.generarToken(palabra));
-            System.out.println("Token " + tokens.size() + ": " + tokens.get(tokens.size()-1).getTipo().name());
+            try {
+               tokens.add(lexer.generarToken(palabra)); 
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+            
+            if(!tokens.isEmpty()){
+               System.out.println("Token " + tokens.size() + ": " + tokens.get(tokens.size()-1).getTipo().name()); 
+            }
+            
         }
         
     }//GEN-LAST:event_generarBtnActionPerformed

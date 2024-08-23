@@ -24,12 +24,28 @@ public class ArchivoEntrada {
     }
     
     public String[] separarTokens(String texto) {
+        
         ArrayList<String> palabras = new ArrayList<>();
-        StringBuilder palabraActual = new StringBuilder();
-
+        StringBuilder palabraActual = new StringBuilder(); 
+                
         for (int i = 0; i < texto.length(); i++) {
             char c = texto.charAt(i);
-
+            int sq = 0;
+            
+            if (palabraActual.toString().startsWith("Square.Color(") && sq!=1) {
+                
+                while(c != ')'){
+                    palabraActual.append(c);
+                    i++;
+                    c = texto.charAt(i);
+                }
+                
+                palabraActual.append(c);
+                    
+                    c = texto.charAt(i);
+                    sq++;
+            }
+            
             if (c != ' ' && c != '\n') {
                 palabraActual.append(c);
             } else if (palabraActual.length() > 0) {

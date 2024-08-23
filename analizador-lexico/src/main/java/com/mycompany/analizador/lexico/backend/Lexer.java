@@ -10,10 +10,10 @@ package com.mycompany.analizador.lexico.backend;
  */
 public class Lexer {
     
-    public Token generarToken(String palabra){
-        
-        if (esIdentificador(palabra)) {
-            return new Token(TipoToken.IDENTIFICADOR, palabra);
+    public Token generarToken(String palabra) throws RuntimeException{
+
+        if (esPalabraReservada(palabra)) {
+            return new Token(TipoToken.PALABRA_RESERVADA, palabra);
         } else if (esSuma(palabra)) {
             return new Token(TipoToken.SUMA, palabra);
         } else if (esResta(palabra)) {
@@ -48,8 +48,6 @@ public class Lexer {
             return new Token(TipoToken.ASIGNACION_SIMPLE, palabra);
         } else if (esAsignacionCompuesta(palabra)) {
             return new Token(TipoToken.ASIGNACION_COMPUESTA, palabra);
-        } else if (esPalabraReservada(palabra)) {
-            return new Token(TipoToken.PALABRA_RESERVADA, palabra);
         } else if (esEntero(palabra)) {
             return new Token(TipoToken.ENTERO, palabra);
         } else if (esDecimal(palabra)) {
@@ -76,10 +74,13 @@ public class Lexer {
             return new Token(TipoToken.COMA, palabra);
         } else if (esPunto(palabra)) {
             return new Token(TipoToken.PUNTO, palabra);
+        } else if (esIdentificador(palabra)) {
+            return new Token(TipoToken.IDENTIFICADOR, palabra);
         } else {
             throw new RuntimeException("Token no reconocido: " + palabra);
         }
     }
+
     
     private boolean esIdentificador(String palabra) {
         Gramatica gramatica = new Gramatica(palabra);
@@ -159,15 +160,25 @@ public class Lexer {
     }
 
     private boolean esEntero(String palabra) {
-        return true;
+        try {
+            Integer.valueOf(palabra);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private boolean esDecimal(String palabra) {
-        return true;
+        try {
+            Double.valueOf(palabra);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private boolean esCadena(String palabra) {
-        return true;
+        return palabra.length() >= 2 && palabra.startsWith("\"") && palabra.endsWith("\"");
     }
 
     private boolean esBooleano(String palabra) {
@@ -175,19 +186,21 @@ public class Lexer {
     }
 
     private boolean esCaracter(String palabra) {
-        return true;
+        return palabra.length() == 3 && palabra.startsWith("'") && palabra.endsWith("'");
     }
 
     private boolean esSquare1(String palabra) {
-        return true;
+        Gramatica gramatica = new Gramatica(palabra);
+        return gramatica.square1();
     }
 
     private boolean esSquare2(String palabra) {
-        return true;
+        Gramatica gramatica = new Gramatica(palabra);
+        return gramatica.square2();
     }
 
     private boolean esComentario(String palabra) {
-        return true;
+        return palabra.startsWith("'") && !palabra.endsWith("'");
     }
 
     private boolean esParentesis(String palabra) {

@@ -9,7 +9,9 @@ package com.mycompany.analizador.lexico.backend;
  * @author mynordma
  */
 public class Lexer {
-    private String colorParametro = "#ffffff";
+    private String colorParametro;
+    private String filaParametro;
+    private String columnaParametro;
     
     public Token generarToken(String palabra) throws RuntimeException{
 
@@ -192,14 +194,24 @@ public class Lexer {
 
     private boolean esSquare1(String palabra) {
         Gramatica gramatica = new Gramatica(palabra);
-        colorParametro = gramatica.getColorParametro();
-        return gramatica.square1();
+        if(gramatica.square1()){
+            colorParametro = gramatica.getColorParametro();
+            filaParametro = gramatica.getFilaParametro();
+            columnaParametro = gramatica.getColumnaParametro();
+            return true;
+        }
+        return false;
     }
 
     private boolean esSquare2(String palabra) {
         Gramatica gramatica = new Gramatica(palabra);
-        colorParametro = gramatica.getColorParametro();
-        return gramatica.square2();
+        if(gramatica.square2()){
+            colorParametro = gramatica.getColorParametro();
+            filaParametro = gramatica.getFilaParametro();
+            columnaParametro = gramatica.getColumnaParametro(); 
+            return true;
+        }
+        return false;
     }
 
     private boolean esComentario(String palabra) {
@@ -228,6 +240,14 @@ public class Lexer {
 
     public String getColorParametro() {
         return colorParametro;
+    }
+
+    public String getFilaParametro() {
+        return filaParametro;
+    }
+
+    public String getColumnaParametro() {
+        return columnaParametro;
     }
 
 }

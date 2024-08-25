@@ -34,7 +34,6 @@ public class Gramatica {
             filaParametro = parametros[0];
             columnaParametro = parametros[1];
             colorParametro = palabra.substring(13, 20);
-            
             return true;
         }
         } catch (Exception e) {

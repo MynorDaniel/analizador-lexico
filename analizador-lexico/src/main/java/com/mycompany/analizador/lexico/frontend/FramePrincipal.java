@@ -25,6 +25,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private int filas;
     private int columnas;
     private List<String> colores;
+    private List<String[]> parametrosEspeciales;
 
     /**
      * Creates new form FramePrincipal
@@ -141,15 +142,33 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_importarBtnMouseClicked
 
     private void generarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarBtnActionPerformed
+        // Separar cada palabra en el textArea
         ArchivoEntrada archivo = new ArchivoEntrada();
         String[] palabras = archivo.separarPalabrasCompuestas(archivo.separarTokens(textArea.getText().trim()));
-        List<Token> tokens = new ArrayList<>();
         
-        Lexer lexer = new Lexer();
+        // Generar los tokens iterando por cada palabra y guardar los parametros de las funciones Square.Color
+        List<Token> tokens = new ArrayList<>();
+        colores = new ArrayList<>();
+        parametrosEspeciales = new ArrayList<>();
+        List<String> coloresSquare2 = new ArrayList<>();
+        
         for (String palabra : palabras) {
+            Lexer lexer = new Lexer();
             System.out.println("Palabra: " + palabra);
             try {
                tokens.add(lexer.generarToken(palabra)); 
+               if(lexer.getColorParametro() != null){
+                    if(lexer.getFilaParametro() == null){
+                        coloresSquare2.add(lexer.getColorParametro());
+                    }
+               }
+               if(tokens.get(tokens.size()-1).getTipo().name().equals("SQUARE2")){
+                   colores.add(coloresSquare2.get(coloresSquare2.size()-1));
+               }else if(!tokens.get(tokens.size()-1).getTipo().name().equals("SQUARE1")){
+                   colores.add(tokens.get(tokens.size()-1).getTipo().getColor());
+               }else if(tokens.get(tokens.size()-1).getTipo().name().equals("SQUARE1")){
+                   parametrosEspeciales.add(new String[]{lexer.getColorParametro(), lexer.getFilaParametro(), lexer.getColumnaParametro()});
+               }
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
@@ -160,13 +179,10 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
             
         }
-        
-        colores = new ArrayList<>();
-        
-        for (int i = 0; i < tokens.size(); i++) {
-            colores.add(tokens.get(i).getTipo().getColor());
+        for (int i = 0; i < colores.size(); i++) {
+            System.out.println("Color: " + colores.get(i));
+            
         }
-        
         pintarCuadricula();
         
     }//GEN-LAST:event_generarBtnActionPerformed
@@ -236,7 +252,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void pintarCuadricula() throws java.lang.IndexOutOfBoundsException{
         if (filas * columnas < colores.size()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Cantidad de tokens y cuadros diferentes", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Hay mas tokens que cuadros.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
 
         cuadriculaPanel.removeAll(); 
@@ -256,9 +272,16 @@ public class FramePrincipal extends javax.swing.JFrame {
             celda.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             cuadriculaPanel.add(celda);
         }
-
+        
+        pintarCuadriculasEspeciales();
+        
         cuadriculaPanel.revalidate(); 
         cuadriculaPanel.repaint();
+        
+    }
+    
+    private void pintarCuadriculasEspeciales(){
+        
     }
 
 

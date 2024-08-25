@@ -26,6 +26,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     private int columnas;
     private List<String> colores;
     private List<String[]> parametrosEspeciales;
+    private List<int[]> matriz = new ArrayList<>();
+    List<Token> tokens;
 
     /**
      * Creates new form FramePrincipal
@@ -165,7 +167,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         String[] palabras = archivo.separarPalabrasCompuestas(archivo.separarTokens(textArea.getText().trim()));
         
         // Generar los tokens iterando por cada palabra y guardar los parametros de las funciones Square.Color
-        List<Token> tokens = new ArrayList<>();
+        tokens = new ArrayList<>();
         colores = new ArrayList<>();
         parametrosEspeciales = new ArrayList<>();
         List<String> coloresSquare2 = new ArrayList<>();
@@ -197,6 +199,11 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
             
         }
+        
+        // Asignar una fila y columna del editor a cada token
+        asignarFilasYColumnas(archivo.getCantidadPalabrasEnLineas());
+        
+        // Pintar la cuadricula a partir de los colores guardados
         for (int i = 0; i < colores.size(); i++) {
             System.out.println("Color: " + colores.get(i));
             
@@ -296,11 +303,13 @@ public class FramePrincipal extends javax.swing.JFrame {
                 filaActual++;
             }
             
-            JPanel celda = new JPanel();
+            CuadroPanel celda = new CuadroPanel();
             celda.setPreferredSize(new Dimension(cellWidth, cellHeight));
             try {
                 System.out.println("Fila : " + filaActual + " Columna: " + columnaActual);
                 celda.setBackground(Color.decode(colores.get(i)));
+                celda.setFila(filaActual);
+                celda.setColumna(columnaActual);
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Cuadricula en blanco");
             }
@@ -323,7 +332,19 @@ public class FramePrincipal extends javax.swing.JFrame {
         
     }
     
-
+    private void asignarFilasYColumnas(List<Integer> cantidadPalabras){
+        for (int i = 0; i < cantidadPalabras.size(); i++) {
+            for (int j = 0; j < cantidadPalabras.get(i); j++) {
+                matriz.add(new int[]{i+1, j+1});
+                System.out.println("Par ordenado: " + (i+1) + " " + (j+1));
+            }
+        }
+        
+        for (int i = 0; i < tokens.size(); i++) {
+            tokens.get(i).setFilaEditor(matriz.get(i)[0]);
+            tokens.get(i).setColumnaEditor(matriz.get(i)[1]);
+        }
+    }
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

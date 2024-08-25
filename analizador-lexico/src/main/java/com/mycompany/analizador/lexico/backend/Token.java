@@ -11,6 +11,8 @@ package com.mycompany.analizador.lexico.backend;
 public class Token {
     private final TipoToken tipo;
     private final String lexema;
+    private int filaEditor;
+    private int columnaEditor;
 
     public Token(TipoToken tipo, String lexema) {
         this.tipo = tipo;
@@ -23,6 +25,14 @@ public class Token {
 
     public String getLexema() {
         return lexema;
+    }
+
+    public void setFilaEditor(int filaEditor) {
+        this.filaEditor = filaEditor;
+    }
+
+    public void setColumnaEditor(int columnaEditor) {
+        this.columnaEditor = columnaEditor;
     }
     
     

@@ -6,7 +6,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="importarBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Importar"/>
+            <Property name="text" type="java.lang.String" value="Importar texto"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="importarBtnMouseClicked"/>
@@ -14,10 +14,26 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="dimensionesBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Establecer dimensiones cuadricula"/>
+            <Property name="text" type="java.lang.String" value="Establecer dimensiones de cuadricula"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="dimensionesBtnMouseClicked"/>
+          </Events>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="reporteBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reporte"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reporteBtnMouseClicked"/>
+          </Events>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="exportarBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Exportar PNG"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="exportarBtnMouseClicked"/>
           </Events>
         </Menu>
       </SubComponents>

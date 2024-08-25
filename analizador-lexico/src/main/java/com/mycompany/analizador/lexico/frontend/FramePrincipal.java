@@ -54,6 +54,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         importarBtn = new javax.swing.JMenu();
         dimensionesBtn = new javax.swing.JMenu();
+        reporteBtn = new javax.swing.JMenu();
+        exportarBtn = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,7 +83,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             .addGap(0, 495, Short.MAX_VALUE)
         );
 
-        importarBtn.setText("Importar");
+        importarBtn.setText("Importar texto");
         importarBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 importarBtnMouseClicked(evt);
@@ -89,13 +91,29 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(importarBtn);
 
-        dimensionesBtn.setText("Establecer dimensiones cuadricula");
+        dimensionesBtn.setText("Establecer dimensiones de cuadricula");
         dimensionesBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dimensionesBtnMouseClicked(evt);
             }
         });
         jMenuBar1.add(dimensionesBtn);
+
+        reporteBtn.setText("Reporte");
+        reporteBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reporteBtnMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(reporteBtn);
+
+        exportarBtn.setText("Exportar PNG");
+        exportarBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportarBtnMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(exportarBtn);
 
         setJMenuBar(jMenuBar1);
 
@@ -230,6 +248,14 @@ public class FramePrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_dimensionesBtnMouseClicked
 
+    private void reporteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reporteBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reporteBtnMouseClicked
+
+    private void exportarBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportarBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportarBtnMouseClicked
+
     private void crearCuadricula() {
         cuadriculaPanel.removeAll(); 
         cuadriculaPanel.setLayout(new GridLayout(filas, columnas, 1, 1)); 
@@ -259,40 +285,56 @@ public class FramePrincipal extends javax.swing.JFrame {
         
         int cellWidth = 500 / columnas;
         int cellHeight = 500 / filas;
+        
+        int filaActual = 1;
+        int columnaActual = 1;
 
         for (int i = 0; i < filas * columnas; i++) {
+            
+            if(columnaActual-1 == columnas){
+                columnaActual = 1;
+                filaActual++;
+            }
+            
             JPanel celda = new JPanel();
             celda.setPreferredSize(new Dimension(cellWidth, cellHeight));
             try {
-               celda.setBackground(Color.decode(colores.get(i))); 
+                System.out.println("Fila : " + filaActual + " Columna: " + columnaActual);
+                celda.setBackground(Color.decode(colores.get(i)));
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Cuadricula en blanco");
             }
             
+            // Si la fila y columna actual coinciden con los parametros especiales.
+            for (int j = 0; j < parametrosEspeciales.size(); j++) {
+                if(Integer.parseInt(parametrosEspeciales.get(j)[1]) == filaActual && Integer.parseInt(parametrosEspeciales.get(j)[2]) == columnaActual){
+                    celda.setBackground(Color.decode(parametrosEspeciales.get(j)[0]));
+                }
+            }
+            
+            columnaActual++;
+            
             celda.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             cuadriculaPanel.add(celda);
         }
-        
-        pintarCuadriculasEspeciales();
         
         cuadriculaPanel.revalidate(); 
         cuadriculaPanel.repaint();
         
     }
     
-    private void pintarCuadriculasEspeciales(){
-        
-    }
 
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cuadriculaPanel;
     private javax.swing.JMenu dimensionesBtn;
+    private javax.swing.JMenu exportarBtn;
     private javax.swing.JButton generarBtn;
     private javax.swing.JMenu importarBtn;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenu reporteBtn;
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }

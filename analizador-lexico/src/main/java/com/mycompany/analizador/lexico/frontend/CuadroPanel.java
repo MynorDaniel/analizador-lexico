@@ -82,6 +82,10 @@ public class CuadroPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Evento que muestra un automata a partir del token correspondiente al cuadro.
+     * @param evt 
+     */
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         String textoInformativo = "" + token.getTipo().name() + " --- Fila: " + token.getFilaEditor() + ", Columna: " + token.getColumnaEditor() + " --> Cuadro[" + this.fila + ", " + this.columna + "]";
         Automata automata = new Automata(textoInformativo);

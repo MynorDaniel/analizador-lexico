@@ -17,12 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 
 /**
  *
@@ -372,6 +367,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         int filaActual = 1;
         int columnaActual = 1;
 
+        // Creando una celda para cada cuadro, asignando un token, fila y columna.
         for (int i = 0; i < filas * columnas; i++) {
             
             if(columnaActual-1 == columnas){

@@ -20,6 +20,10 @@ public class Gramatica {
         this.palabra = palabra;
     }
     
+    /**
+     * Verifica que la palabra cumpla con la gramatica del token especial.
+     * @return 
+     */
     public boolean square1(){
         try {
             if(esSquare()){
@@ -43,6 +47,10 @@ public class Gramatica {
         
     }
     
+    /**
+     * Hace lo mismo que square1 pero verifica la gramatica del token especial simple.
+     * @return 
+     */
     public boolean square2(){
         if(esSquare()){
             String[] parametros = eliminarEspaciosEnBlanco(palabra.substring(20, palabra.length()-1)).split(",");
@@ -54,6 +62,10 @@ public class Gramatica {
         return false;
     }
     
+    /**
+     * Verifica la gramatica de un token identificador.
+     * @return 
+     */
     public boolean identificador(){
         if(esLetra(charActual())){
             

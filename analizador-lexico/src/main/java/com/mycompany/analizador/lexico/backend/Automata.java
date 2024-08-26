@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -92,7 +91,7 @@ public class Automata {
             try {
                 Thread.sleep(100); // Esperar 100 ms
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("Hilo interrumpido");
             }
         }
 

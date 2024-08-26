@@ -13,6 +13,12 @@ public class Lexer {
     private String filaParametro;
     private String columnaParametro;
     
+    /**
+     * Genera un token dependiendo de la gramatica que cumpla la palabra.
+     * @param palabra
+     * @return
+     * @throws RuntimeException 
+     */
     public Token generarToken(String palabra) throws RuntimeException{
 
         if (esPalabraReservada(palabra)) {

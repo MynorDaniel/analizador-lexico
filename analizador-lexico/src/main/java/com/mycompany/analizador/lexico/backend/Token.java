@@ -5,7 +5,7 @@
 package com.mycompany.analizador.lexico.backend;
 
 /**
- *
+ * Clase que representa un token.
  * @author mynordma
  */
 public class Token {

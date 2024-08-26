@@ -5,7 +5,7 @@
 package com.mycompany.analizador.lexico.backend;
 
 /**
- *
+ * Enumerado que contiene a todos los tipos de tokens.
  * @author mynordma
  */
 public enum TipoToken {

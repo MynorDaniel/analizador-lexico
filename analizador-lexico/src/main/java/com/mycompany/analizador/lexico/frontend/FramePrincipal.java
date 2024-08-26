@@ -26,7 +26,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private int columnas;
     private List<String> colores;
     private List<String[]> parametrosEspeciales;
-    private List<int[]> matriz = new ArrayList<>();
+    private final List<int[]> matriz = new ArrayList<>();
     List<Token> tokens;
 
     /**
@@ -60,6 +60,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         exportarBtn = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
 
         textArea.setColumns(20);
         textArea.setRows(5);
@@ -84,6 +85,8 @@ public class FramePrincipal extends javax.swing.JFrame {
             cuadriculaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 495, Short.MAX_VALUE)
         );
+
+        jMenuBar1.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Yellow"));
 
         importarBtn.setText("Importar texto");
         importarBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -145,7 +148,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(generarBtn))
                     .addComponent(cuadriculaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
@@ -164,7 +167,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void generarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarBtnActionPerformed
         // Separar cada palabra en el textArea
         ArchivoEntrada archivo = new ArchivoEntrada();
-        String[] palabras = archivo.separarPalabrasCompuestas(archivo.separarTokens(textArea.getText().trim()));
+        String[] palabras = archivo.separarTokens(textArea.getText().trim());
         
         // Generar los tokens iterando por cada palabra y guardar los parametros de las funciones Square.Color
         tokens = new ArrayList<>();

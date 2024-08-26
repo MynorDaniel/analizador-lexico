@@ -1,5 +1,0 @@
-Square.Color(#ffffff, 4 , 3 )
-Square.Color(#fffff3) 
-Square.Color(#D9D441, 4, 4)
-Square.Color(#D9D441)
-abc

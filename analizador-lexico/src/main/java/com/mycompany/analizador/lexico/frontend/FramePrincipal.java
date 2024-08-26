@@ -9,13 +9,20 @@ import com.mycompany.analizador.lexico.backend.Lexer;
 import com.mycompany.analizador.lexico.backend.Token;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -26,8 +33,10 @@ public class FramePrincipal extends javax.swing.JFrame {
     private int columnas;
     private List<String> colores;
     private List<String[]> parametrosEspeciales;
-    private final List<int[]> matriz = new ArrayList<>();
+    private List<int[]> matriz;
     List<Token> tokens;
+    private ArrayList<String[]> datosReporte;
+    private ArrayList<CuadroPanel> casillas;
 
     /**
      * Creates new form FramePrincipal
@@ -165,6 +174,10 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_importarBtnMouseClicked
 
     private void generarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarBtnActionPerformed
+        datosReporte = new ArrayList<>();
+        casillas = new ArrayList<>();
+        matriz = new ArrayList<>();
+
         // Separar cada palabra en el textArea
         ArchivoEntrada archivo = new ArchivoEntrada();
         String[] palabras = archivo.separarTokens(textArea.getText().trim());
@@ -259,13 +272,73 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_dimensionesBtnMouseClicked
 
     private void reporteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reporteBtnMouseClicked
-        // TODO add your handling code here:
+        try {
+            String[] titulos = new String[]{"Token", "Lexema", "Linea", "Columna", "Fila Cuadricula", "Columna Cuadricula", "Color"};
+            for (int i = 0; i < tokens.size(); i++) {
+                try {
+                    datosReporte.add(new String[]{tokens.get(i).getTipo().name(), tokens.get(i).getLexema(), String.valueOf(tokens.get(i).getFilaEditor()), String.valueOf(tokens.get(i).getColumnaEditor()), String.valueOf(casillas.get(i).getFila()), String.valueOf(casillas.get(i).getColumna()), casillas.get(i).getColor()});
+
+                } catch (java.lang.IndexOutOfBoundsException e) {
+                    System.out.println("Fuera del limite");
+                }
+            }
+            generarReporte(titulos);
+        } catch (NullPointerException e) {
+            System.out.println("No hay tokens");
+        }
+        
     }//GEN-LAST:event_reporteBtnMouseClicked
 
     private void exportarBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportarBtnMouseClicked
-        // TODO add your handling code here:
+        try {
+            // Crear la imagen del panel cuadriculaPanel
+            BufferedImage image = new BufferedImage(cuadriculaPanel.getWidth(), cuadriculaPanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = image.createGraphics();
+            cuadriculaPanel.paint(g2d);
+            g2d.dispose();
+
+            // Establecer el nombre base del archivo
+            String baseName = "cuadricula";
+            String extension = ".png";
+            String fileName = baseName + extension;
+            File file = new File(fileName);
+
+            // Si el archivo ya existe, agregar un sufijo numérico
+            int counter = 1;
+            while (file.exists()) {
+                fileName = baseName + "(" + counter + ")" + extension;
+                file = new File(fileName);
+                counter++;
+            }
+
+            // Guardar la imagen en el archivo
+            ImageIO.write(image, "png", file);
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Imagen exportada como " + fileName, "Exportar PNG", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (IOException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al exportar la imagen: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_exportarBtnMouseClicked
 
+    private void generarReporte(String[] titulos) {
+    // Creando la tabla con los titulos y los datos
+        String[][] datos = datosReporte.toArray(String[][]::new);
+        JTable tabla = new JTable(datos, titulos);
+
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        tabla.setFillsViewportHeight(true);
+
+        JDialog dialogo = new JDialog(this, "Reporte", true);
+        dialogo.setSize(1000, 600); 
+        dialogo.setLocationRelativeTo(this);
+
+        dialogo.add(scrollPane);
+
+        dialogo.setVisible(true);
+    }
+
+    
     private void crearCuadricula() {
         cuadriculaPanel.removeAll(); 
         cuadriculaPanel.setLayout(new GridLayout(filas, columnas, 1, 1)); 
@@ -313,6 +386,9 @@ public class FramePrincipal extends javax.swing.JFrame {
                 celda.setBackground(Color.decode(colores.get(i)));
                 celda.setFila(filaActual);
                 celda.setColumna(columnaActual);
+                celda.setColor(colores.get(i));
+                celda.setToken(tokens.get(i));
+                casillas.add(celda);
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Cuadricula en blanco");
             }

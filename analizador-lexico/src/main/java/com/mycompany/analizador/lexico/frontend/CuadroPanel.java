@@ -4,6 +4,9 @@
  */
 package com.mycompany.analizador.lexico.frontend;
 
+import com.mycompany.analizador.lexico.backend.Automata;
+import com.mycompany.analizador.lexico.backend.Token;
+
 /**
  *
  * @author mynordma
@@ -12,6 +15,20 @@ public class CuadroPanel extends javax.swing.JPanel {
     
     private int fila;
     private int columna;
+    private String color;
+    private Token token;
+
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public int getFila() {
         return fila;
@@ -66,7 +83,9 @@ public class CuadroPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        System.out.println("FILA-COLUMNA: " + fila + " " + columna);
+        String textoInformativo = "" + token.getTipo().name() + " --- Fila: " + token.getFilaEditor() + ", Columna: " + token.getColumnaEditor() + " --> Cuadro[" + this.fila + ", " + this.columna + "]";
+        Automata automata = new Automata(textoInformativo);
+        automata.mostrarAutomata(token.getLexema());
     }//GEN-LAST:event_formMouseClicked
 
 

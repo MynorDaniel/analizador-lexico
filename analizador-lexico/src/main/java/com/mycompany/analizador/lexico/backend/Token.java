@@ -34,6 +34,14 @@ public class Token {
     public void setColumnaEditor(int columnaEditor) {
         this.columnaEditor = columnaEditor;
     }
+
+    public int getFilaEditor() {
+        return filaEditor;
+    }
+
+    public int getColumnaEditor() {
+        return columnaEditor;
+    }
     
     
 }

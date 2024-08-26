@@ -44,16 +44,16 @@ public class ArchivoEntrada {
                     ArrayList<String> temp = separarPalabraCompuesta(palabraActual.toString());
                     for (String temp1 : temp) {
                         palabras.add(temp1);
+                        contadorDePalabras++;
                     }
                     palabraActual.setLength(0); 
-                    contadorDePalabras++;
                 }else if(palabraActual.toString().startsWith("Square.Color(") && palabraActual.toString().endsWith(")")){
                     ArrayList<String> temp = separarPalabraCompuesta(palabraActual.toString());
                     for (String temp1 : temp) {
                         palabras.add(temp1);
+                        contadorDePalabras++;
                     }
                     palabraActual.setLength(0); 
-                    contadorDePalabras++;
                 }
                 
             }
@@ -71,8 +71,9 @@ public class ArchivoEntrada {
             ArrayList<String> temp = separarPalabraCompuesta(palabraActual.toString());
             for (String temp1 : temp) {
                 palabras.add(temp1);
+                contadorDePalabras++;
             }
-            contadorDePalabras++;
+            
             cantidadPalabrasEnLineas.add(contadorDePalabras);
         }
 
